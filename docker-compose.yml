@@ -7,6 +7,8 @@ services:
       POSTGRES_PASSWORD: password
     networks:
       - backend
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   api:
     build: ./api
@@ -43,3 +45,6 @@ services:
 networks:
   backend:
   frontend:
+
+volumes:
+  db-data:
