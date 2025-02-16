@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 import requests
 
 app = Flask(__name__)
@@ -10,13 +10,7 @@ def index():
         message = request.form['message']
         requests.post('http://api:5000/messages', json={'username': username, 'message': message})
         return redirect('/')
-    return '''
-        <form method="post">
-            Username: <input type="text" name="username"><br>
-            Message: <input type="text" name="message"><br>
-            <input type="submit" value="Submit">
-        </form>
-    '''
+    return render_template('form.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
