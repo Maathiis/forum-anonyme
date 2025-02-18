@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify
-import psycopg2
+from flask import Flask, request, jsonify # type: ignore
+import psycopg2 # type: ignore
 import os
 
 app = Flask(__name__)

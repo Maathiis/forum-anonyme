@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template # type: ignore
 import requests
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     try:
         response = requests.get('http://api:5000/messages')
-        response.raise_for_status()  # Raise an error for bad status codes
+        response.raise_for_status()  
         messages = response.json()
         return render_template('index.html', messages=messages)
     except requests.exceptions.RequestException as e:
