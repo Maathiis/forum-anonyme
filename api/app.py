@@ -1,6 +1,5 @@
 import os
 
-import psycopg2  # type: ignore
 from flask import Flask, jsonify, request  # type: ignore
 
 app = Flask(__name__)
@@ -12,6 +11,14 @@ DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PASSWORD = os.getenv('DB_PASSWORD', 'password')
 
 def get_db_connection():
+    try:
+        import psycopg2  # type: ignore
+    except ModuleNotFoundError as e:  # pragma: no cover
+        raise RuntimeError(
+            "psycopg2 n'est pas installé. Installe les dépendances API "
+            "(`pip install -r api/requirements.txt`)."
+        ) from e
+
     conn = psycopg2.connect(
         host=DB_HOST,
         database=DB_NAME,
