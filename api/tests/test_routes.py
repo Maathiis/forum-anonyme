@@ -75,7 +75,5 @@ def test_post_messages_inserts(monkeypatch, client):
     assert r.status_code == 200
     assert r.get_json() == {"message": "Message added successfully!"}
     assert fake_conn.committed is True
-    assert any(
-        "INSERT INTO messages" in q[0] for q in fake_conn.cursor_obj.queries
-    )
+    assert any("INSERT INTO messages" in q[0] for q in fake_conn.cursor_obj.queries)
 

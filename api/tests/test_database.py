@@ -31,7 +31,12 @@ def test_database_roundtrip():
     conn = None
     while time.time() < deadline:
         try:
-            conn = psycopg2.connect(host=host, database=dbname, user=user, password=password)
+            conn = psycopg2.connect(
+                host=host,
+                database=dbname,
+                user=user,
+                password=password,
+            )
             break
         except Exception as e:  # pragma: no cover
             last_err = e
