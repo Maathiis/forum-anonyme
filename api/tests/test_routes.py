@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, List, Tuple
+from typing import Any
 
 import pytest
 
@@ -8,14 +8,14 @@ from api.app import app
 
 
 class _FakeCursor:
-    def __init__(self, rows: List[Tuple[Any, ...]]):
+    def __init__(self, rows: list[tuple[Any, ...]]):
         self._rows = rows
         self.queries: list[tuple[str, tuple[Any, ...] | None]] = []
 
     def execute(self, query: str, params: tuple[Any, ...] | None = None) -> None:
         self.queries.append((query, params))
 
-    def fetchall(self) -> List[Tuple[Any, ...]]:
+    def fetchall(self) -> list[tuple[Any, ...]]:
         return self._rows
 
     def close(self) -> None:
@@ -23,7 +23,7 @@ class _FakeCursor:
 
 
 class _FakeConn:
-    def __init__(self, rows: List[Tuple[Any, ...]]):
+    def __init__(self, rows: list[tuple[Any, ...]]):
         self._rows = rows
         self.closed = False
         self.committed = False
@@ -75,5 +75,7 @@ def test_post_messages_inserts(monkeypatch, client):
     assert r.status_code == 200
     assert r.get_json() == {"message": "Message added successfully!"}
     assert fake_conn.committed is True
-    assert any("INSERT INTO messages" in q[0] for q in fake_conn.cursor_obj.queries)
+    assert any(
+        "INSERT INTO messages" in q[0] for q in fake_conn.cursor_obj.queries
+    )
 

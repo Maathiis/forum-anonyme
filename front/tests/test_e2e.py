@@ -33,4 +33,3 @@ def test_e2e_homepage_and_submit():
         assert "Forum Anonyme" in page.content()
 
         browser.close()
-

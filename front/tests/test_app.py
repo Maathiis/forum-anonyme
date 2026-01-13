@@ -44,7 +44,10 @@ def test_get_index_renders_messages(monkeypatch, client):
 
 def test_post_index_requires_fields(monkeypatch, client):
     # Même si l'API est down, ce test doit rester local
-    monkeypatch.setattr("front.app.requests.get", lambda *a, **k: _Resp(200, []))
+    def empty_messages_get(*_a, **_k):
+        return _Resp(200, [])
+
+    monkeypatch.setattr("front.app.requests.get", empty_messages_get)
 
     r = client.post("/", data={"username": "", "message": ""})
     assert r.status_code == 200
@@ -53,7 +56,10 @@ def test_post_index_requires_fields(monkeypatch, client):
 
 
 def test_post_index_sends_message_and_redirects(monkeypatch, client):
-    monkeypatch.setattr("front.app.requests.get", lambda *a, **k: _Resp(200, []))
+    def empty_messages_get(*_a, **_k):
+        return _Resp(200, [])
+
+    monkeypatch.setattr("front.app.requests.get", empty_messages_get)
 
     called = {"ok": False}
 
