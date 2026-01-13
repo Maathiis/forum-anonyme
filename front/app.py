@@ -31,7 +31,7 @@ def index():
                 r.raise_for_status()
                 return redirect("/")
             except requests.exceptions.RequestException as e:
-                error = f"Erreur lors de l’envoi du message : {e}"
+                error = f"Erreur lors de l'envoi du message : {e}"
 
     messages = []
     try:
@@ -46,4 +46,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
-

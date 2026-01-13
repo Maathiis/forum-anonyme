@@ -43,8 +43,6 @@ def test_get_index_renders_messages(monkeypatch, client):
 
 
 def test_post_index_requires_fields(monkeypatch, client):
-    # Même si l'API est down, ce test doit rester local
-
     def empty_messages_get(*_a, **_k):
         return _Resp(200, [])
 
@@ -57,7 +55,6 @@ def test_post_index_requires_fields(monkeypatch, client):
 
 
 def test_post_index_sends_message_and_redirects(monkeypatch, client):
-
     def empty_messages_get(*_a, **_k):
         return _Resp(200, [])
 
@@ -77,4 +74,3 @@ def test_post_index_sends_message_and_redirects(monkeypatch, client):
     r = client.post("/", data={"username": "alice", "message": "hello"})
     assert r.status_code == 302
     assert called["ok"] is True
-

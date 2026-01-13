@@ -60,7 +60,6 @@ def test_get_messages_returns_rows(monkeypatch, client):
 
     r = client.get("/messages")
     assert r.status_code == 200
-    # jsonify() convertit les tuples en listes
     assert r.get_json() == [list(row) for row in fake_rows]
     assert any("SELECT" in q[0] for q in fake_conn.cursor_obj.queries)
 
@@ -76,4 +75,3 @@ def test_post_messages_inserts(monkeypatch, client):
     assert r.get_json() == {"message": "Message added successfully!"}
     assert fake_conn.committed is True
     assert any("INSERT INTO messages" in q[0] for q in fake_conn.cursor_obj.queries)
-

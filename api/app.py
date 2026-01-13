@@ -15,11 +15,10 @@ def _get_secret_value(env_name: str, default: str) -> str:
             with open(file_path, "r", encoding="utf-8") as f:
                 return f.read().strip()
         except OSError:
-            # fallback sur la variable standard
             pass
     return os.getenv(env_name, default)
 
-# Configuration de la base de données
+
 DB_HOST = os.getenv("DB_HOST", "db")
 DB_NAME = os.getenv("DB_NAME", "forum")
 DB_USER = os.getenv("DB_USER", "postgres")

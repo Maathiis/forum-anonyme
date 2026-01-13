@@ -14,7 +14,7 @@ def test_database_roundtrip():
     """
     host = os.getenv("DB_HOST", "")
     if not host:
-        pytest.skip("DB_HOST non défini (test d’intégration DB ignoré)")
+        pytest.skip("DB_HOST non défini (test d'intégration DB ignoré)")
 
     dbname = os.getenv("DB_NAME", "forum")
     user = os.getenv("DB_USER", "postgres")
@@ -23,9 +23,8 @@ def test_database_roundtrip():
     try:
         import psycopg2  # type: ignore
     except ModuleNotFoundError:
-        pytest.skip("psycopg2 non installé (test d’intégration DB ignoré)")
+        pytest.skip("psycopg2 non installé (test d'intégration DB ignoré)")
 
-    # Attente courte pour laisser Postgres démarrer si besoin
     deadline = time.time() + 10
     last_err: Exception | None = None
     conn = None
@@ -57,7 +56,10 @@ def test_database_roundtrip():
         msg_id = cur.fetchone()[0]
         conn.commit()
 
-        cur.execute("SELECT username, message FROM messages WHERE id = %s", (msg_id,))
+        cur.execute(
+            "SELECT username, message FROM messages WHERE id = %s",
+            (msg_id,),
+        )
         row = cur.fetchone()
         assert row == (username, message)
 
@@ -66,4 +68,3 @@ def test_database_roundtrip():
         cur.close()
     finally:
         conn.close()
-
