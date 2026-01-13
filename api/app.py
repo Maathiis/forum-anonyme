@@ -4,11 +4,25 @@ from flask import Flask, jsonify, request  # type: ignore
 
 app = Flask(__name__)
 
+def _get_secret_value(env_name: str, default: str) -> str:
+    """
+    Permet d'utiliser des secrets Swarm/K8s via *_FILE (ex: DB_PASSWORD_FILE).
+    """
+    file_path = os.getenv(f"{env_name}_FILE")
+    if file_path:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except OSError:
+            # fallback sur la variable standard
+            pass
+    return os.getenv(env_name, default)
+
 # Configuration de la base de données
-DB_HOST = os.getenv('DB_HOST', 'db')
-DB_NAME = os.getenv('DB_NAME', 'forum')
-DB_USER = os.getenv('DB_USER', 'postgres')
-DB_PASSWORD = os.getenv('DB_PASSWORD', 'password')
+DB_HOST = os.getenv("DB_HOST", "db")
+DB_NAME = os.getenv("DB_NAME", "forum")
+DB_USER = os.getenv("DB_USER", "postgres")
+DB_PASSWORD = _get_secret_value("DB_PASSWORD", "password")
 
 def get_db_connection():
     try:
