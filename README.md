@@ -25,6 +25,8 @@ Après installation des dépendances, activer les hooks :
 
 - `npm run prepare`
 
+Note : le **scope est obligatoire** (ex: `feat(tooling): ajoute commitizen`), sinon le commit est refusé par commitlint.
+
 ## Versioning automatique (bonus)
 
 Le projet est configuré pour utiliser **standard-version** afin de générer automatiquement :

@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify # type: ignore
-import psycopg2 # type: ignore
 import os
+
+import psycopg2  # type: ignore
+from flask import Flask, jsonify, request  # type: ignore
 
 app = Flask(__name__)
 
@@ -18,6 +19,10 @@ def get_db_connection():
         password=DB_PASSWORD
     )
     return conn
+
+@app.get('/health')
+def health():
+    return jsonify({'status': 'ok'}), 200
 
 @app.route('/messages', methods=['GET'])
 def get_messages():
