@@ -115,9 +115,6 @@ docker compose down
 ```bash
 # Sur le manager
 ./swarm/setup-manager.sh <VPS_IP>
-
-# Sur le worker (optionnel)
-./swarm/setup-worker.sh <TOKEN> <MANAGER_IP>
 ```
 
 3. Secret Swarm créé :
@@ -159,8 +156,7 @@ forum-anonyme/
 │   ├── Dockerfile
 │   └── init.sql
 ├── swarm/                  # Scripts Swarm
-│   ├── setup-manager.sh
-│   └── setup-worker.sh
+│   └── setup-manager.sh
 ├── .github/workflows/      # CI/CD
 │   └── cicd.yml
 ├── docker-compose.yml      # Dev local
