@@ -108,9 +108,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compute short SHA
+      - name: Compute short SHA & Lowercase REPO
         id: vars
-        run: echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "repo_lower=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -128,7 +130,7 @@ jobs:
           context: ./api
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/api:${{ steps.vars.outputs.sha7 }}
+            ghcr.io/${{ steps.vars.outputs.repo_lower }}/api:${{ steps.vars.outputs.sha7 }}
 
       - name: Build & push front
         uses: docker/build-push-action@v6
@@ -136,7 +138,7 @@ jobs:
           context: ./front
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/front:${{ steps.vars.outputs.sha7 }}
+            ghcr.io/${{ steps.vars.outputs.repo_lower }}/front:${{ steps.vars.outputs.sha7 }}
 
       - name: Build & push db
         uses: docker/build-push-action@v6
@@ -144,7 +146,7 @@ jobs:
           context: ./db
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/db:${{ steps.vars.outputs.sha7 }}
+            ghcr.io/${{ steps.vars.outputs.repo_lower }}/db:${{ steps.vars.outputs.sha7 }}
 
   deploy:
     name: Deploy (Docker Swarm via SSH)
@@ -155,9 +157,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compute short SHA
+      - name: Compute short SHA & Lowercase REPO
         id: vars
-        run: echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "repo_lower=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
       - name: Setup SSH (manager)
         run: |
@@ -173,7 +177,7 @@ jobs:
       - name: Deploy stack on manager
         env:
           SHA7: ${{ steps.vars.outputs.sha7 }}
-          REPO: ${{ github.repository }}
+          REPO: ${{ steps.vars.outputs.repo_lower }}
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
           ssh -i ~/.ssh/id_rsa "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" "\
