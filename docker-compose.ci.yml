@@ -1,0 +1,5 @@
+services:
+  # Expose Postgres on localhost for integration tests executed on the runner
+  db:
+    ports:
+      - "5432:5432"
