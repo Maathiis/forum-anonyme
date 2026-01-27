@@ -16,6 +16,7 @@ services:
         target: db_password
     deploy:
       replicas: 1
+      endpoint_mode: dnsrr
       placement:
         constraints:
           - node.role == manager
@@ -44,6 +45,7 @@ services:
         target: db_password
     deploy:
       replicas: 1
+      endpoint_mode: dnsrr
       placement:
         constraints:
           - node.role == manager
